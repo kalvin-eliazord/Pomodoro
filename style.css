@@ -1,0 +1,172 @@
+* {
+    font-family: sans-serif;
+    font-weight: bold;
+    margin: 0;
+    padding: 0;
+  }
+  
+  body {
+    background-color: #24292a;
+  }
+  
+  .main {
+    width: 800px;
+    margin: auto;
+    color: white;
+  }
+  
+  .top {
+    background-color: #863735;
+    text-align: center;
+    border-radius: 40px;
+    margin-top: 10px;
+    padding: 10px;
+    margin-bottom: 20px;
+    height: 255px;
+    max-height: 255px;
+    overflow-x: hidden;
+    overflow-y: hidden;
+  }
+  
+  .topHigh {
+    display: flex;
+    font-size: 56px;
+    width: 140px;
+    padding: 5px;
+    position: relative;
+    left: 40%;
+  }
+  
+  .minutes,
+  .seconds {
+    font-size: 56px;
+    border: 0;
+  }
+  
+  p {
+    position: relative;
+    bottom: 10px;
+  }
+  
+  .progressBarParent {
+    display: inline-block;
+    margin-bottom: 20px;
+    border: 1px solid white;
+  }
+  
+  .progressBar {
+    width: 200px;
+    height: 20px;
+    border-radius: 40px;
+    background-color: #24292a;
+  }
+  
+  .titlePomodoro {
+    margin: 0;
+    padding: 0;
+    max-padding: 20px;
+    font-weight: 100;
+    position: relative;
+    bottom: 7px;
+  }
+  
+  .topDown {
+    font-size: 22px;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    gap: 50px;
+    padding-bottom: 10px;
+  }
+  
+  .startButton,
+  .stopButton {
+    width: auto;
+    border: 1px solid #24292a;
+    border-radius: 20px;
+    padding: 10px;
+    margin-bottom: 10px;
+    font-weight: 100;
+    font-size: 16px;
+  }
+  
+  .startButton:hover,
+  .stopButton:hover {
+    cursor: pointer;
+    border: 1px solid white;
+  }
+  
+  .bottom {
+    width: 800px;
+    margin: auto;
+  }
+  
+  .todoParent {
+    margin-bottom: 80px;
+  }
+  
+  h1,
+  h3 {
+    text-align: center;
+  }
+  
+  .titleTodo,
+  .titleDone {
+    margin-bottom: 10px;
+  }
+  
+  .task {
+    display: flex;
+    justify-content: space-evenly;
+    margin-bottom: 10px;
+  }
+  
+  input {
+    background-color: transparent;
+    border-width: 1px 0 0 0;
+    border-style: solid;
+    color: white;
+    border-color: #756a5f;
+    text-align: center;
+    width: 98%;
+    height: 50px;
+  }
+  
+  input:hover {
+    border: 1px solid white;
+  }
+  
+  .addTask {
+    border: 1px solid #43494a;
+    margin-bottom: 20px;
+  }
+  
+  li {
+    list-style: none;
+  }
+  
+  .todo,
+  .done {
+    position: relative;
+    right: 13px;
+  }
+  
+  img {
+    width: 30px;
+    position: relative;
+    filter: invert(1);
+  }
+  
+  img:hover {
+    cursor: pointer;
+  }
+  
+  .deleteButton {
+    left: 40px;
+  }
+  
+  .settingsButton {
+    right: 46%;
+    top: 5%;
+  }
+  
