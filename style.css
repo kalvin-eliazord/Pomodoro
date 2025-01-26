@@ -34,18 +34,13 @@
     width: 140px;
     padding: 5px;
     position: relative;
-    left: 40%;
+    left: 39%;
   }
   
   .minutes,
   .seconds {
     font-size: 56px;
     border: 0;
-  }
-  
-  p {
-    position: relative;
-    bottom: 10px;
   }
   
   .progressBarParent {
@@ -64,7 +59,6 @@
   .titlePomodoro {
     margin: 0;
     padding: 0;
-    max-padding: 20px;
     font-weight: 100;
     position: relative;
     bottom: 7px;
@@ -83,11 +77,11 @@
   .stopButton {
     width: auto;
     border: 1px solid #24292a;
-    border-radius: 20px;
-    padding: 10px;
+    border-radius: 10px;
+    padding: 5px;
     margin-bottom: 10px;
     font-weight: 100;
-    font-size: 16px;
+    font-size: 15px;
   }
   
   .startButton:hover,
@@ -136,7 +130,7 @@
     border: 1px solid white;
   }
   
-  .addTask {
+  .addTodoTaskInput {
     border: 1px solid #43494a;
     margin-bottom: 20px;
   }
@@ -168,5 +162,93 @@
   .settingsButton {
     right: 46%;
     top: 5%;
+  }
+  
+  .darkBg {
+    position: fixed;
+    top: 0;
+    background-color: black;
+    width: 100%;
+    height: 6188px;
+    opacity: 0.5;
+    display: none;
+  }
+  
+  .modal {
+    color: white;
+    position: fixed;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    top: 30%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 700px;
+    background-color: #24292a;
+    padding: 20px;
+    border-radius: 40px;
+    z-index: 2;
+    max-width: 700px;
+    box-shadow: 5px 30px 70px rgba(0, 0, 0, 0.5);
+    display: none;
+  }
+  
+  .titleModal {
+    margin-bottom: 25px;
+  }
+  
+  th {
+    text-align: left;
+  }
+  
+  .workInput,
+  .shortBreakInput,
+  .longBreakInput,
+  .longBreakDelayInput {
+    border: 1px solid #43494a;
+    border-radius: 10px;
+    font-weight: 100;
+  }
+  
+  .saveSettingsButton,
+  .closeSettingsButton {
+    padding: 10px;
+    margin: 20px;
+    border-radius: 10px;
+  }
+  
+  .closeSettingsButton {
+    border: 1px solid white;
+  }
+  
+  .saveSettingsButton {
+    background-color: #863735;
+  }
+  
+  .saveSettingsButton:hover,
+  .closeSettingsButton:hover {
+    cursor: pointer;
+  }
+  
+  .closeSettingsButton:hover {
+    background-color: grey;
+  }
+  
+  .saveSettingsButton:hover {
+    border: 1px solid white;
+  }
+  
+  .buttonsParent {
+    display: flex;
+    gap: 30px;
+  }
+  
+  .workP,
+  .shortBreakP,
+  .longBreakP,
+  .longBreakDelayP {
+    font-weight: bold;
+    position: relative;
+    left: 20px;
   }
   
