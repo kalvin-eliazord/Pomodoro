@@ -13,7 +13,7 @@
             <th> <input class="workInput" placeholder="In minutes"></input>
             </th>
             <th>
-              <p class="workP"> </p>
+              <p class="workDurationModalP"> </p>
             </th>
           </tr>
           <tr>
@@ -22,7 +22,7 @@
             <th> <input class="shortBreakInput" placeholder="In minutes"></input>
             </th>
             <th>
-              <p class="shortBreakP"> </p>
+              <p class="shortBreakDurationModalP"> </p>
             </th>
           </tr>
           <tr>
@@ -31,7 +31,7 @@
             <th> <input class="longBreakInput" placeholder="In minutes"></input>
             </th>
             <th>
-              <p class="longBreakP"> </p>
+              <p class="longBreakDurationModalP"> </p>
             </th>
           </tr>
           <tr>
@@ -40,7 +40,7 @@
             <th> <input class="longBreakDelayInput" placeholder="How many before long break"></input>
             </th>
             <th>
-              <p class="longBreakDelayP"> </p>
+              <p class="longBreakDelayModalP"> </p>
             </th>
           </tr>
         </table>
@@ -55,12 +55,14 @@
       <div class="main">
       
         <div class="top">
-          <img class="settingsButton" src="https://www.svgrepo.com/show/498931/settings2.svg">
+          <img class="pomodoroSettingsButton" src="https://www.svgrepo.com/show/498931/settings2.svg">
+          <p class="cyclesLeftP">
+          </p>
           <div class="topHigh">
-            <h3 class="minutesH3">45
+            <h3 class="minutesH3">
             </h3>
             <h3 class="timerSeparator"> : </h3>
-            <h3 class="secondsH3">00
+            <h3 class="secondsH3">
             </h3>
           </div>
           <div class="progressBarParent">
@@ -72,7 +74,7 @@
             <div class="startButton"> S T A R T </div>
             <div class="stopButton"> S T O P </div>
           </div>
-          <h1 class="titlePomodoro"> </h1>
+          <h1 class="currentTodoNameH1"> </h1>
       
         </div>
         <div class="bottom">
@@ -82,7 +84,7 @@
             <div class="task">
               <input class="addTodoTaskInput" placeholder="Add new task."> </input>
             </div>
-            <ul class="todo">
+            <ul class="todoTaskUl">
       
             </ul>
           </div>
@@ -90,7 +92,7 @@
           <div class="doneParent">
             <h3 class="titleDone"> D O N E </h3>
       
-            <ul class="done">
+            <ul class="doneTaskUl">
       
             </ul>
           </div>
@@ -98,5 +100,5 @@
       </div>
 </body>
 
-<script href="script.js"></script>
+<script src="script.js"></script>
 </html>

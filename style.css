@@ -10,7 +10,7 @@
   }
   
   .main {
-    width: 800px;
+    width: 1000px;
     margin: auto;
     color: white;
   }
@@ -31,10 +31,16 @@
   .topHigh {
     display: flex;
     font-size: 56px;
-    width: 140px;
-    padding: 5px;
+    justify-content: center;
     position: relative;
-    left: 39%;
+    bottom: 5px;
+  }
+  
+  .cyclesLeftP {
+    font-size: 16px;
+    position: relative;
+    bottom: 10px;
+    font-weight: 100;
   }
   
   .minutes,
@@ -45,7 +51,8 @@
   
   .progressBarParent {
     display: inline-block;
-    margin-bottom: 20px;
+    width: 200px;
+    margin-bottom: 10px;
     border: 1px solid white;
   }
   
@@ -56,12 +63,12 @@
     background-color: #24292a;
   }
   
-  .titlePomodoro {
+  .currentTodoNameH1 {
     margin: 0;
     padding: 0;
     font-weight: 100;
     position: relative;
-    bottom: 7px;
+    font-size: 18px;
   }
   
   .topDown {
@@ -69,7 +76,7 @@
     position: relative;
     display: flex;
     justify-content: center;
-    gap: 50px;
+    gap: 60px;
     padding-bottom: 10px;
   }
   
@@ -90,11 +97,6 @@
     border: 1px solid white;
   }
   
-  .bottom {
-    width: 800px;
-    margin: auto;
-  }
-  
   .todoParent {
     margin-bottom: 80px;
   }
@@ -109,12 +111,6 @@
     margin-bottom: 10px;
   }
   
-  .task {
-    display: flex;
-    justify-content: space-evenly;
-    margin-bottom: 10px;
-  }
-  
   input {
     background-color: transparent;
     border-width: 1px 0 0 0;
@@ -122,27 +118,26 @@
     color: white;
     border-color: #756a5f;
     text-align: center;
-    width: 98%;
+    width: 100%;
     height: 50px;
-  }
-  
-  input:hover {
-    border: 1px solid white;
   }
   
   .addTodoTaskInput {
     border: 1px solid #43494a;
-    margin-bottom: 20px;
+    margin-bottom: 15px;
+  }
+  
+  .addTodoTaskInput:hover {
+    border: 1px solid white;
+  }
+  
+  .task {
+    margin-bottom: 0px;
   }
   
   li {
     list-style: none;
-  }
-  
-  .todo,
-  .done {
-    position: relative;
-    right: 13px;
+    height: 50px;
   }
   
   img {
@@ -156,10 +151,25 @@
   }
   
   .deleteButton {
-    left: 40px;
+    position: relative;
+    left: 9px;
+    bottom: 55px;
+    opacity: 0.8;
   }
   
-  .settingsButton {
+  .inputNameTask:hover {
+    background-color: rgba(211, 211, 211, 0.1);
+  }
+  
+  .startTaskButton {
+    position: relative;
+    left: 930px;
+    width: 40px;
+    height: 45px;
+    bottom: 50px;
+  }
+  
+  .pomodoroSettingsButton {
     right: 46%;
     top: 5%;
   }
@@ -210,6 +220,13 @@
     font-weight: 100;
   }
   
+  .workInput:hover,
+  .shortBreakInput:hover,
+  .longBreakInput:hover,
+  .longBreakDelayInput:hover {
+    border: 1px solid white;
+  }
+  
   .saveSettingsButton,
   .closeSettingsButton {
     padding: 10px;
@@ -243,10 +260,10 @@
     gap: 30px;
   }
   
-  .workP,
-  .shortBreakP,
-  .longBreakP,
-  .longBreakDelayP {
+  .workDurationModalP,
+  .shortBreakDurationModalP,
+  .longBreakDurationModalP,
+  .longBreakDelayModalP {
     font-weight: bold;
     position: relative;
     left: 20px;
