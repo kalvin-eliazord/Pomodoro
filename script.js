@@ -3,46 +3,32 @@ console.clear();
 const $ = (className) => document.querySelector(className);
 const $all = (className) => document.querySelectorAll(className);
 const newElement = (elementName) => document.createElement(elementName);
-
 const currentTodoNameH1 = $(".currentTodoNameH1");
 const addTodoTaskInput = $(".addTodoTaskInput");
-
 const cyclesLeftP = $(".cyclesLeftP");
 const minutesH3 = $(".minutesH3");
 const secondsH3 = $(".secondsH3");
 const startButton = $(".startButton");
 const stopButton = $(".stopButton");
 const progressBar = $(".progressBar");
-
 const darkBg = $(".darkBg");
-
 const modal = $(".modal");
 const pomodoroSettingsButton = $(".pomodoroSettingsButton");
 const topBackground = $(".top");
-
 const saveSettingsButton = $(".saveSettingsButton");
 const closeSettingsButton = $(".closeSettingsButton");
-
 const workInput = $(".workInput");
 const shortBreakInput = $(".shortBreakInput");
 const longBreakInput = $(".longBreakInput");
 const longBreakDelayInput = $(".longBreakDelayInput");
-
 const workDurationModalP = $(".workDurationModalP");
 const shortBreakDurationModalP = $(".shortBreakDurationModalP");
 const longBreakDurationModalP = $(".longBreakDurationModalP");
 const longBreakDelayModalP = $(".longBreakDelayModalP");
-
 const todoTaskUl = $(".todoTaskUl");
 const doneTaskUl = $(".doneTaskUl");
-
-// Audio Init
-const endWorkAudio = newElement("audio");
-endWorkAudio.src =
-  "https://www.myinstants.com/media/sounds/aot-eyecatch-intermission-song-end.mp3";
-
-const endBreakAudio = newElement("audio");
-endBreakAudio.src = "https://www.myinstants.com/media/sounds/dararararaaa.mp3";
+const endWorkAudio = $(".endWorkAudio");
+const endBreakAudio = $(".endBreakAudio");
 
 let todoTasks = [];
 let timerInterval = null;
@@ -76,31 +62,81 @@ const getTestCycles = (longBreakDelay) => {
       isDone: false
     },
     longBreakDelay: longBreakDelay,
-    longBreakDelayMax: longBreakDelay
+    longBreakDelayMax: longBreakDelay,
+    cycleState: null,
+    oldCycleState: null
   };
 };
 
 //let pomodoro = getPomodoro(45, 10, 30, 4);
 //setPomodoroModal(pomodoro);
 
-pomodoro = getTestCycles(2);
-const pomodoroDefault = getTestCycles(2);
+const pomodoroDefault = getTestCycles(4);
+pomodoro = structuredClone(pomodoroDefault);
 cyclesLeftP.innerText = `${pomodoro.longBreakDelay} pomodoro before long break.`;
 
 // Start pomodoro button
 startButton.addEventListener("click", () => {
-  startButton.innerText =
-    startButton.innerText !== "P A U S E" ? "P A U S E" : "S T A R T";
+  console.log("pomodoro startButton");
+  console.log(pomodoro);
+
+  pomodoro.oldCycleState = !pomodoro.oldCycleState ? pomodoro.cycleState : null;
+  pomodoro.cycleState = !pomodoro.oldCycleState ? "inProgress" : "paused";
+  toggleTaskStartTimerBtn(pomodoro.cycleState);
 
   clearInterval(timerInterval);
-  timerInterval = setInterval(() => {
-    if (!pomodoro.workTimer.isDone) updateTimer(pomodoro.workTimer);
-    else if (pomodoro.longBreakDelay > 1) updateTimer(pomodoro.shortBreakTimer);
-    else updateTimer(pomodoro.longBreakTimer);
-  }, 1000);
+  timerInterval = startPomodoro(pomodoro);
 });
 
-const updateTimer = (timer) => {
+const toggleTaskStartTimerBtn = (pomodoroState) => {
+  todoTasks.forEach((todoTask) => {
+    todoTask.startTodoButton.style.visibility =
+      pomodoroState === "inProgress" ? "hidden" : "visible";
+  });
+};
+
+const startPomodoro = (pomodoro) => {
+  return setInterval(() => {
+    if (!pomodoro.workTimer.isDone)
+      handlePomodoroState(pomodoro.workTimer, pomodoro);
+    else if (!pomodoro.shortBreakTimer.isDone && pomodoro.longBreakDelay > 1)
+      handlePomodoroState(pomodoro.shortBreakTimer, pomodoro);
+    else handlePomodoroState(pomodoro.longBreakTimer, pomodoro);
+  }, 1000);
+};
+
+const handlePomodoroState = (timer, pomodoro) => {
+  console.log("CycleState: " + pomodoro.cycleState);
+  switch (pomodoro.cycleState) {
+    case "inProgress":
+      updateTimer(timer, pomodoro);
+      pomodoro.oldCycleState = pomodoro.cycleState;
+      setButtonsText(pomodoro);
+      break;
+
+    case "paused":
+      setButtonsText(pomodoro);
+      clearInterval(timerInterval);
+      break;
+
+    case "done":
+      pomodoro = getResetTimers(pomodoro);
+      setFrontTimer(pomodoro.workTimer);
+      setButtonsText(pomodoro);
+      clearInterval(timerInterval);
+      console.log(pomodoro);
+      break;
+
+    default:
+      console.log("Pomodoro cycle state undefined.");
+      break;
+  }
+
+  setFrontTimer(timer);
+  setProgressBar(timer);
+};
+
+const updateTimer = (timer, pomodoro) => {
   if (timer.seconds < 1 && timer.minutes > 0) {
     --timer.minutes;
     timer.seconds = 59;
@@ -108,38 +144,53 @@ const updateTimer = (timer) => {
     --timer.seconds;
     ++timer.elapsedSeconds;
   } else {
-    timer.isDone = true;
-
-    if (pomodoro.shortBreakTimer.isDone) {
-      pomodoro.longBreakDelay--;
-      setWorkCycle();
-    } else if (pomodoro.longBreakTimer.isDone) {
-      setWorkCycle();
-      pomodoro.longBreakDelay = pomodoro.longBreakDelayMax;
-    } else if (pomodoro.workTimer.isDone) {
-      const typeBreak = pomodoro.longBreakDelay > 1 ? "Short " : "Long ";
-      setBreakCycle(typeBreak);
-    }
+    setNextTimer(timer, pomodoro);
   }
-
-  setProgressBar(timer);
-  if (startButton.innerText === "S T A R T") clearInterval(timerInterval);
-  else setFrontTimer(timer);
 };
 
-const setBreakCycle = (typeBreak) => {
+const setButtonsText = (pomodoro) => {
+  stopButton.style.visibility = !pomodoro.oldCycleState ? "hidden" : "visible";
+  stopButton.innerText = pomodoro.workTimer.isDone ? "S K I P" : "D O N E";
+
+  startButton.innerText =
+    pomodoro.cycleState === "inProgress" ? "P A U S E" : "S T A R T";
+};
+
+const setNextTimer = (timer, pomodoro) => {
+  timer.isDone = true;
+
+  if (pomodoro.shortBreakTimer.isDone) {
+    setWorkTimer(pomodoro);
+  } else if (pomodoro.longBreakTimer.isDone) {
+    pomodoro.longBreakDelay = pomodoro.longBreakDelayMax;
+    setWorkTimer(pomodoro);
+  } else if (pomodoro.workTimer.isDone) {
+    const typeBreak = pomodoro.longBreakDelay > 1 ? "Short " : "Long ";
+    setBreakTimer(typeBreak);
+    if (pomodoro.longBreakDelay > 1) --pomodoro.longBreakDelay;
+
+    cyclesLeftP.innerText = `${pomodoro.longBreakDelay} pomodoro before long break.`;
+  }
+};
+
+const setBreakTimer = (typeBreak) => {
   endWorkAudio.pause();
   endBreakAudio.play();
+  setBreakTimerStyle(typeBreak);
+  createDoneTask();
+};
 
+const setBreakTimerStyle = (typeBreak) => {
   currentTodoNameH1.innerText = typeBreak + "Break Time!";
   topBackground.style.background = "green";
-  stopButton.innerText = "S K I P";
+  progressBar.style.width = "100%";
+};
 
-  const doneTaskName = todoTasks.length > 0 ? todoTasks[0].nameInput.value : "";
+const createDoneTask = () => {
+  const doneTaskName =
+    todoTasks.length > 0 ? todoTasks[0].taskNameInput.value : "";
   createTask(true, doneTaskName);
   removeFirstTodoTask();
-  console.log("after work time  ");
-  console.log(pomodoro);
 };
 
 const removeFirstTodoTask = () => {
@@ -149,47 +200,31 @@ const removeFirstTodoTask = () => {
   }
 };
 
-const setWorkCycle = () => {
+const setWorkTimer = (pomodoro) => {
   endBreakAudio.pause();
   endWorkAudio.play();
 
+  currentTodoNameH1.innerText =
+    todoTasks.length > 0 ? todoTasks[0].taskNameInput.value : "";
   startButton.innerText = "S T A R T";
   stopButton.innerText = "S T O P";
   topBackground.style.background = "#863735";
-  cyclesLeftP.innerText = `${pomodoro.longBreakDelay} pomodoro before long break.`;
-  currentTodoNameH1.innerText =
-    todoTasks.length > 0 ? todoTasks[0].nameInput.value : "";
+  progressBar.style.width = "100%";
 
-  pomodoro = resetTimers();
-  setFrontTimer(pomodoro.workTimer);
-  clearInterval(timerInterval);
-
-  console.log("after break time " + pomodoro);
-  console.log(pomodoro);
+  pomodoro.cycleState = "done";
 };
 
-const resetTimers = () => {
-  if (pomodoro.longBreakDelay < 1)
-    pomodoro.longBreakDelay = pomodoro.longBreakDelayMax;
-
+const getResetTimers = (pomodoro) => {
   return {
-    ...pomodoroDefault,
+    ...structuredClone(pomodoroDefault),
     longBreakDelay: pomodoro.longBreakDelay
   };
 };
 
 // Stop pomodoro button
 stopButton.addEventListener("click", () => {
-  if (stopButton.innerText === "S K I P") {
-    stopButton.innerText = "S T O P";
-    topBackground.style.background = "#863735";
-  }
-
-  clearInterval(timerInterval);
-
-  startButton.innerText = "S T A R T";
-  pomodoro = { ...pomodoro, workTimer: pomodoroDefault.workTimer };
-  setFrontTimer(pomodoro);
+  pomodoro.cycleState =
+    pomodoro.cycleState === "workInProgress" ? "workStopped" : "workDone";
 });
 
 const setProgressBar = (timer) => {
@@ -204,8 +239,9 @@ const setProgressBar = (timer) => {
 // Tasks
 addTodoTaskInput.addEventListener("keydown", (event) => {
   if (event.key !== "Enter") return;
+
   createTask(false, addTodoTaskInput.value);
-  currentTodoNameH1.innerText = addTodoTaskInput.value;
+  currentTodoNameH1.innerText = todoTasks[0].taskNameInput.value;
   addTodoTaskInput.value = "";
 });
 
@@ -215,13 +251,14 @@ const createTask = (isDone, taskName) => {
 
 const getTask = (isDone, name) => {
   return {
+    id: todoTasks.length,
     isDone: isDone,
     name: name
   };
 };
 
 const renderTask = (task) => {
-  const elementsTask = getElementsTask();
+  const elementsTask = getElementsTask(task.id);
   setElementsClass(elementsTask, task.isDone);
   setElementsData(elementsTask, task);
 
@@ -229,28 +266,29 @@ const renderTask = (task) => {
   else doneTaskUl.appendChild(elementsTask.li);
 
   elementsTask.li.appendChild(elementsTask.div);
-  elementsTask.div.appendChild(elementsTask.nameInput);
+  elementsTask.div.appendChild(elementsTask.taskNameInput);
   elementsTask.div.appendChild(elementsTask.deleteButton);
-  elementsTask.div.appendChild(elementsTask.startTaskButton);
+  elementsTask.div.appendChild(elementsTask.startTodoButton);
 
   if (!task.isDone) todoTasks.push(elementsTask);
 };
 
-const getElementsTask = () => {
+const getElementsTask = (id) => {
   return {
+    id: id,
     li: newElement("li"),
     div: newElement("div"),
     deleteButton: newElement("img"),
-    nameInput: newElement("input"),
-    startTaskButton: newElement("img")
+    taskNameInput: newElement("input"),
+    startTodoButton: newElement("img")
   };
 };
 
 const setElementsClass = (elementsTask, isDone) => {
   elementsTask.div.className = "task";
-  elementsTask.nameInput.className = "inputNameTask";
+  elementsTask.taskNameInput.className = "inputNameTask";
   elementsTask.deleteButton.className = "deleteButton";
-  elementsTask.startTaskButton.className = "startTaskButton";
+  elementsTask.startTodoButton.className = "startTodoButton";
 };
 
 const setElementsData = (elementsTask, task) => {
@@ -260,22 +298,31 @@ const setElementsData = (elementsTask, task) => {
     elementsTask.li.remove();
   });
 
-  elementsTask.nameInput.type = "text";
-  elementsTask.nameInput.value = task.name;
+  elementsTask.taskNameInput.type = "text";
+  elementsTask.taskNameInput.value = task.name;
 
-  elementsTask.startTaskButton.src =
+  elementsTask.startTodoButton.src =
     "https://www.svgrepo.com/show/312860/play-button.svg";
-  elementsTask.startTaskButton.addEventListener("click", () => {
-    currentTodoTaskH1.innerText = task.name;
-    console.log("Todo: Put " + task.name + " first into the list");
-    //todoTasks.forEach();
-    // put it first into the list, not in the dom, like that It will still remove him in the dom and create the done task
-    // parse the list to find the index of the task then change his position in the list for it to be first // TEST TODO
+  elementsTask.startTodoButton.addEventListener("click", () => {
+    timerInterval = startPomodoro();
+    setTaskFirstPriority(todoTasks, task);
   });
 
-  elementsTask.startTaskButton.style.visibility = task.isDone
+  elementsTask.startTodoButton.style.visibility = task.isDone
     ? "hidden"
     : "default";
+};
+
+const setTaskFirstPriority = (todoTasks, task) => {
+  if (todoTasks[0].id === task.id) return;
+
+  currentTodoNameH1.innerText = task.name;
+  todoTasks.forEach((todoTask, i) => {
+    if (todoTask.id === task.id) {
+      todoTasks.splice(i, 1);
+      todoTasks.splice(0, 0, elementsTask);
+    }
+  });
 };
 
 const getPomodoro = (
@@ -308,13 +355,6 @@ const getTimer = (minutes) => {
   };
 };
 
-const setPomodoroModal = (pomodoro) => {
-  workDurationModalP.innerText = pomodoro.workTimer.minutes;
-  shortBreakDurationModalP.innerText = pomodoro.shortBreakTimer.minutes;
-  longBreakDurationModalP.innerText = pomodoro.longBreakTimer.minutes;
-  longBreakDelayModalP.innerText = pomodoro.longBreakDelay;
-};
-
 const setFrontTimer = (timer) => {
   minutesH3.innerText =
     timer.minutes < 10
@@ -325,9 +365,6 @@ const setFrontTimer = (timer) => {
       ? "0" + timer.seconds.toString()
       : timer.seconds.toString();
 };
-
-setPomodoroModal(pomodoro);
-setFrontTimer(pomodoro.workTimer);
 
 // Modal
 pomodoroSettingsButton.addEventListener("click", () => {
@@ -347,6 +384,7 @@ saveSettingsButton.addEventListener("click", () => {
     longBreakInput,
     longBreakDelayInput
   ];
+
   const isInvalid = inputsModal.some(
     (inputModal) =>
       inputModal.value === "" ||
@@ -356,14 +394,25 @@ saveSettingsButton.addEventListener("click", () => {
 
   if (isInvalid) return;
 
-  const newPomodoro = getPomodoro(
+  const savedPomodoro = getPomodoro(
     workInput.value,
     shortBreakInput.value,
     longBreakInput.value,
     longBreakDelayInput.value
   );
 
-  setPomodoroModal(newPomodoro);
-  setFrontTimer(newPomodoro.workTimer);
-  pomodoro = newPomodoro;
+  setPomodoroModal(savedPomodoro);
+  setFrontTimer(savedPomodoro.workTimer);
+  pomodoro = savedPomodoro;
 });
+
+const setPomodoroModal = (pomodoro) => {
+  workDurationModalP.innerText = pomodoro.workTimer.minutes;
+  shortBreakDurationModalP.innerText = pomodoro.shortBreakTimer.minutes;
+  longBreakDurationModalP.innerText = pomodoro.longBreakTimer.minutes;
+  longBreakDelayModalP.innerText = pomodoro.longBreakDelay;
+  cyclesLeftP.innerText = `${pomodoro.longBreakDelay} pomodoro before long break.`;
+};
+
+setPomodoroModal(pomodoro);
+setFrontTimer(pomodoro.workTimer);

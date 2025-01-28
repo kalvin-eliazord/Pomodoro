@@ -1,271 +1,274 @@
 * {
-    font-family: sans-serif;
-    font-weight: bold;
-    margin: 0;
-    padding: 0;
-  }
-  
-  body {
-    background-color: #24292a;
-  }
-  
-  .main {
-    width: 1000px;
-    margin: auto;
-    color: white;
-  }
-  
-  .top {
-    background-color: #863735;
-    text-align: center;
-    border-radius: 40px;
-    margin-top: 10px;
-    padding: 10px;
-    margin-bottom: 20px;
-    height: 255px;
-    max-height: 255px;
-    overflow-x: hidden;
-    overflow-y: hidden;
-  }
-  
-  .topHigh {
-    display: flex;
-    font-size: 56px;
-    justify-content: center;
-    position: relative;
-    bottom: 5px;
-  }
-  
-  .cyclesLeftP {
-    font-size: 16px;
-    position: relative;
-    bottom: 10px;
-    font-weight: 100;
-  }
-  
-  .minutes,
-  .seconds {
-    font-size: 56px;
-    border: 0;
-  }
-  
-  .progressBarParent {
-    display: inline-block;
-    width: 200px;
-    margin-bottom: 10px;
-    border: 1px solid white;
-  }
-  
-  .progressBar {
-    width: 200px;
-    height: 20px;
-    border-radius: 40px;
-    background-color: #24292a;
-  }
-  
-  .currentTodoNameH1 {
-    margin: 0;
-    padding: 0;
-    font-weight: 100;
-    position: relative;
-    font-size: 18px;
-  }
-  
-  .topDown {
-    font-size: 22px;
-    position: relative;
-    display: flex;
-    justify-content: center;
-    gap: 60px;
-    padding-bottom: 10px;
-  }
-  
-  .startButton,
-  .stopButton {
-    width: auto;
-    border: 1px solid #24292a;
-    border-radius: 10px;
-    padding: 5px;
-    margin-bottom: 10px;
-    font-weight: 100;
-    font-size: 15px;
-  }
-  
-  .startButton:hover,
-  .stopButton:hover {
-    cursor: pointer;
-    border: 1px solid white;
-  }
-  
-  .todoParent {
-    margin-bottom: 80px;
-  }
-  
-  h1,
-  h3 {
-    text-align: center;
-  }
-  
-  .titleTodo,
-  .titleDone {
-    margin-bottom: 10px;
-  }
-  
-  input {
-    background-color: transparent;
-    border-width: 1px 0 0 0;
-    border-style: solid;
-    color: white;
-    border-color: #756a5f;
-    text-align: center;
-    width: 100%;
-    height: 50px;
-  }
-  
-  .addTodoTaskInput {
-    border: 1px solid #43494a;
-    margin-bottom: 15px;
-  }
-  
-  .addTodoTaskInput:hover {
-    border: 1px solid white;
-  }
-  
-  .task {
-    margin-bottom: 0px;
-  }
-  
-  li {
-    list-style: none;
-    height: 50px;
-  }
-  
-  img {
-    width: 30px;
-    position: relative;
-    filter: invert(1);
-  }
-  
-  img:hover {
-    cursor: pointer;
-  }
-  
-  .deleteButton {
-    position: relative;
-    left: 9px;
-    bottom: 55px;
-    opacity: 0.8;
-  }
-  
-  .inputNameTask:hover {
-    background-color: rgba(211, 211, 211, 0.1);
-  }
-  
-  .startTaskButton {
-    position: relative;
-    left: 930px;
-    width: 40px;
-    height: 45px;
-    bottom: 50px;
-  }
-  
-  .pomodoroSettingsButton {
-    right: 46%;
-    top: 5%;
-  }
-  
-  .darkBg {
-    position: fixed;
-    top: 0;
-    background-color: black;
-    width: 100%;
-    height: 6188px;
-    opacity: 0.5;
-    display: none;
-  }
-  
-  .modal {
-    color: white;
-    position: fixed;
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-    top: 30%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 700px;
-    background-color: #24292a;
-    padding: 20px;
-    border-radius: 40px;
-    z-index: 2;
-    max-width: 700px;
-    box-shadow: 5px 30px 70px rgba(0, 0, 0, 0.5);
-    display: none;
-  }
-  
-  .titleModal {
-    margin-bottom: 25px;
-  }
-  
-  th {
-    text-align: left;
-  }
-  
-  .workInput,
-  .shortBreakInput,
-  .longBreakInput,
-  .longBreakDelayInput {
-    border: 1px solid #43494a;
-    border-radius: 10px;
-    font-weight: 100;
-  }
-  
-  .workInput:hover,
-  .shortBreakInput:hover,
-  .longBreakInput:hover,
-  .longBreakDelayInput:hover {
-    border: 1px solid white;
-  }
-  
-  .saveSettingsButton,
-  .closeSettingsButton {
-    padding: 10px;
-    margin: 20px;
-    border-radius: 10px;
-  }
-  
-  .closeSettingsButton {
-    border: 1px solid white;
-  }
-  
-  .saveSettingsButton {
-    background-color: #863735;
-  }
-  
-  .saveSettingsButton:hover,
-  .closeSettingsButton:hover {
-    cursor: pointer;
-  }
-  
-  .closeSettingsButton:hover {
-    background-color: grey;
-  }
-  
-  .saveSettingsButton:hover {
-    border: 1px solid white;
-  }
-  
-  .buttonsParent {
-    display: flex;
-    gap: 30px;
-  }
-  
-  .workDurationModalP,
-  .shortBreakDurationModalP,
-  .longBreakDurationModalP,
-  .longBreakDelayModalP {
-    font-weight: bold;
-    position: relative;
-    left: 20px;
-  }
-  
+  font-family: sans-serif;
+  font-weight: bold;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: #24292a;
+}
+
+.main {
+  width: 1000px;
+  margin: auto;
+  color: white;
+}
+
+.top {
+  background-color: #863735;
+  text-align: center;
+  border-radius: 40px;
+  margin-top: 10px;
+  padding: 10px;
+  margin-bottom: 20px;
+  height: 255px;
+  max-height: 255px;
+  overflow-x: hidden;
+  overflow-y: hidden;
+}
+
+.topHigh {
+  display: flex;
+  font-size: 56px;
+  justify-content: center;
+  position: relative;
+  bottom: 5px;
+}
+
+.cyclesLeftP {
+  font-size: 16px;
+  position: relative;
+  bottom: 10px;
+  font-weight: 100;
+}
+
+.minutes,
+.seconds {
+  font-size: 56px;
+  border: 0;
+}
+
+.progressBarParent {
+  display: inline-block;
+  width: 200px;
+  margin-bottom: 10px;
+  border: 1px solid white;
+}
+
+.progressBar {
+  width: 200px;
+  height: 20px;
+  border-radius: 40px;
+  background-color: #24292a;
+}
+
+.currentTodoNameH1 {
+  margin: 0;
+  padding: 0;
+  font-weight: 100;
+  position: relative;
+  font-size: 18px;
+}
+
+.topDown {
+  font-size: 22px;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  gap: 60px;
+  padding-bottom: 10px;
+}
+
+.startButton,
+.stopButton {
+  width: auto;
+  border: 1px solid #24292a;
+  border-radius: 10px;
+  padding: 5px;
+  margin-bottom: 10px;
+  font-weight: 100;
+  font-size: 15px;
+}
+
+.stopButton {
+  visibility: hidden;
+}
+
+.startButton:hover,
+.stopButton:hover {
+  cursor: pointer;
+  border: 1px solid white;
+}
+
+.todoParent {
+  margin-bottom: 80px;
+}
+
+h1,
+h3 {
+  text-align: center;
+}
+
+.titleTodo,
+.titleDone {
+  margin-bottom: 10px;
+}
+
+input {
+  background-color: transparent;
+  border-width: 1px 0 0 0;
+  border-style: solid;
+  color: white;
+  border-color: #756a5f;
+  text-align: center;
+  width: 100%;
+  height: 50px;
+}
+
+.addTodoTaskInput {
+  border: 1px solid #43494a;
+  margin-bottom: 15px;
+}
+
+.addTodoTaskInput:hover {
+  border: 1px solid white;
+}
+
+.task {
+  margin-bottom: 0px;
+}
+
+li {
+  list-style: none;
+  height: 50px;
+}
+
+img {
+  width: 30px;
+  position: relative;
+  filter: invert(1);
+}
+
+img:hover {
+  cursor: pointer;
+}
+
+.deleteButton {
+  position: relative;
+  left: 9px;
+  bottom: 55px;
+  opacity: 0.8;
+}
+
+.inputNameTask:hover {
+  background-color: rgba(211, 211, 211, 0.1);
+}
+
+.startTodoButton {
+  position: relative;
+  left: 930px;
+  width: 40px;
+  height: 45px;
+  bottom: 50px;
+}
+
+.pomodoroSettingsButton {
+  right: 46%;
+  top: 5%;
+}
+
+.darkBg {
+  position: fixed;
+  top: 0;
+  background-color: black;
+  width: 100%;
+  height: 6188px;
+  opacity: 0.5;
+  display: none;
+}
+
+.modal {
+  color: white;
+  position: fixed;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  top: 30%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 700px;
+  background-color: #24292a;
+  padding: 20px;
+  border-radius: 40px;
+  z-index: 2;
+  max-width: 700px;
+  box-shadow: 5px 30px 70px rgba(0, 0, 0, 0.5);
+  display: none;
+}
+
+.titleModal {
+  margin-bottom: 25px;
+}
+
+th {
+  text-align: left;
+}
+
+.workInput,
+.shortBreakInput,
+.longBreakInput,
+.longBreakDelayInput {
+  border: 1px solid #43494a;
+  border-radius: 10px;
+  font-weight: 100;
+}
+
+.workInput:hover,
+.shortBreakInput:hover,
+.longBreakInput:hover,
+.longBreakDelayInput:hover {
+  border: 1px solid white;
+}
+
+.saveSettingsButton,
+.closeSettingsButton {
+  padding: 10px;
+  margin: 20px;
+  border-radius: 10px;
+}
+
+.closeSettingsButton {
+  border: 1px solid white;
+}
+
+.saveSettingsButton {
+  background-color: #863735;
+}
+
+.saveSettingsButton:hover,
+.closeSettingsButton:hover {
+  cursor: pointer;
+}
+
+.closeSettingsButton:hover {
+  background-color: grey;
+}
+
+.saveSettingsButton:hover {
+  border: 1px solid white;
+}
+
+.buttonsParent {
+  display: flex;
+  gap: 30px;
+}
+
+.workDurationModalP,
+.shortBreakDurationModalP,
+.longBreakDurationModalP,
+.longBreakDelayModalP {
+  font-weight: bold;
+  position: relative;
+  left: 20px;
+}
