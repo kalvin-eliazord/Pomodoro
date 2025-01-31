@@ -1,5 +1,14 @@
 # Pomodoro Timer Documentation
 
+## Preview
+
+<p class="codepen" data-height="300" data-theme-id="dark" data-default-tab="result" data-slug-hash="dPbQzQB" data-pen-title="Pomodoro" data-user="kalvin-eliazord" style="height: 300px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; border: 2px solid; margin: 1em 0; padding: 1em;">
+  <span>See the Pen <a href="https://codepen.io/kalvin-eliazord/pen/dPbQzQB">
+  Pomodoro</a> by Corty (<a href="https://codepen.io/kalvin-eliazord">@kalvin-eliazord</a>)
+  on <a href="https://codepen.io">CodePen</a>.</span>
+</p>
+<script async src="https://public.codepenassets.com/embed/index.js"></script>
+
 ## Overview
 
 This project is a **Pomodoro Timer** built using JavaScript. It helps users stay productive by implementing the Pomodoro Technique, which consists of work and break intervals. Users can create tasks, track progress, and customize settings.
