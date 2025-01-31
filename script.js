@@ -12,11 +12,13 @@ const startButton = $(".startButton");
 const stopButton = $(".stopButton");
 const progressBar = $(".progressBar");
 const darkBg = $(".darkBg");
-const modal = $(".modal");
-const pomodoroSettingsButton = $(".pomodoroSettingsButton");
+const modalSettings = $(".modalSettings");
+const pomodoroSettingsButton = $(".pomodoroSettingsBtnParent");
 const topBackground = $(".top");
 const saveSettingsButton = $(".saveSettingsButton");
 const closeSettingsButton = $(".closeSettingsButton");
+const noButton = $(".noButton");
+const yesButton = $(".yesButton");
 const workInput = $(".workInput");
 const shortBreakInput = $(".shortBreakInput");
 const longBreakInput = $(".longBreakInput");
@@ -30,6 +32,7 @@ const doneTaskUl = $(".doneTaskUl");
 const shortBreakAudio = $(".shortBreakAudio");
 const longBreakAudio = $(".longBreakAudio");
 const idleAudio = $(".idleAudio");
+const modalCongratulation = $(".modalCongratulation");
 const congratulationP = $(".congratulationP");
 
 let todoTasks = [];
@@ -65,7 +68,7 @@ const getTestPomodoroCycle = (longBreakDelay) => {
   };
 };
 
-pomodoro = getTestPomodoroCycle(4);
+let pomodoro = getTestPomodoroCycle(4);
 let pomodoroDefault = structuredClone(pomodoro);
 
 // Start pomodoro button
@@ -79,7 +82,6 @@ startButton.addEventListener("click", () => {
 
 const handleState = (newState) => {
   pomodoro.cycleState = newState;
-  toggleTaskStartPomodoroBtn(pomodoro.cycleState);
 
   switch (newState) {
     case "inProgress":
@@ -87,9 +89,11 @@ const handleState = (newState) => {
       break;
     case "paused":
       clearInterval(pomodoro.timerId);
+      pomodoro.timerId = null;
       break;
     case "done":
       prepareNextTimer();
+      stopCycle();
       break;
     default:
       console.log("State undefined.");
@@ -99,18 +103,11 @@ const handleState = (newState) => {
   setButtonsText();
 };
 
-const toggleTaskStartPomodoroBtn = (pomodoroState) => {
-  todoTasks.forEach((todoTask) => {
-    todoTask.startTodoButton.style.visibility =
-      pomodoroState === "inProgress" ? "hidden" : "visible";
-  });
-};
-
 const startTimer = () => {
   pomodoro.timerId = setInterval(() => {
     let timer = getCurrentTimer();
     if (timer.secondsLeft > 1) {
-      --timer.secondsLeft;
+      timer.secondsLeft--;
       updateUI(timer);
     } else {
       handleState("done");
@@ -143,6 +140,8 @@ const updateUI = (timer) => {
 };
 
 const setButtonsText = () => {
+  toggleTaskStartPomodoroBtn();
+
   stopButton.style.visibility =
     pomodoro.cycleState !== "idle" ? "visible" : "hidden";
 
@@ -150,9 +149,20 @@ const setButtonsText = () => {
     pomodoro.currentTimer === "work" ? "D O N E" : "S K I P";
 
   startButton.innerText =
-    pomodoro.cycleState === "paused" || pomodoro.cycleState === "idle"
-      ? "S T A R T"
-      : "P A U S E";
+    pomodoro.cycleState === "inProgress" || pomodoro.cycleState === "done"
+      ? "P A U S E"
+      : "S T A R T";
+};
+
+const toggleTaskStartPomodoroBtn = () => {
+  todoTasks.forEach((todoTask) => {
+    todoTask.startTodoButton.style.visibility =
+      pomodoro.cycleState === "inProgress" ||
+      pomodoro.currentTimer !== "work" ||
+      pomodoro.cycleState === "done"
+        ? "hidden"
+        : "visible";
+  });
 };
 
 const prepareNextTimer = () => {
@@ -163,34 +173,77 @@ const prepareNextTimer = () => {
       pomodoro.currentTimer = "shortBreak";
       pomodoro.longBreakDelay--;
     } else {
+      renderConfetti(35);
+      toggleCongratulationModal();
       pomodoro.currentTimer = "longBreak";
       pomodoro.longBreakDelay = pomodoro.longBreakDelayMax;
     }
 
     setBreakUI(typeBreak);
-    createDoneTask();
   } else {
-    pomodoro.cycleState = "idle";
     pomodoro.currentTimer = "work";
     setWorkUI();
-    clearInterval(pomodoro.timerId);
   }
 
   resetTimers();
 };
 
-const showConfetti = () => {
-  confetti(
-    Object.assign({}, defaults, {
-      particleCount,
-      origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 }
-    })
-  );
+const stopCycle = () => {
+  if (
+    pomodoro.longBreakDelay === pomodoro.longBreakDelayMax &&
+    pomodoro.currentTimer === "work"
+  ) {
+    pomodoro.cycleState = "idle";
+    setButtonsText();
+    clearInterval(pomodoro.timerId);
+  }
 };
 
-const createDoneTask = () => {
-  createTask(true, todoTasks[0].taskNameInput.value);
-  removeFirstTodoTask();
+const renderConfetti = (numberConfetti) => {
+  for (i = 0; i < numberConfetti; i++) {
+    const confetti = newElement("div");
+    confetti.className = "confetti";
+    document.body.appendChild(confetti);
+    confetti.style.left = `${getRandomRange(5, 95)}%`;
+    confetti.style.top = `${getRandomRange(0, 10)}%`;
+    confetti.style.background = `hsl(${getRandomRange(0, 360)}, 100%, 50%)`;
+    confetti.style.transform = `translateX(${getRandomRange(-100, 200)}px)`;
+    confetti.style.animation = `fall ${getRandomRange(
+      2,
+      5
+    )}s ease-out forwards`;
+  }
+};
+
+const getRandomRange = (min, max) => {
+  return Math.random() * (max - min) + min;
+};
+
+yesButton.addEventListener("click", () => {
+  toggleCongratulationModal();
+  for (i = 0; i < todoTasks.length; ++i) createDoneTask(i);
+  removeTodoTasks();
+});
+
+noButton.addEventListener("click", () => {
+  toggleCongratulationModal();
+});
+
+const toggleCongratulationModal = () => {
+  if (modalCongratulation.style.display !== "inline-block") {
+    cyclesLeftP.style.visibility = "hidden";
+    darkBg.style.display = "inline-block";
+    modalCongratulation.style.display = "inline-block";
+    modalCongratulation.focus();
+  } else {
+    darkBg.style.display = "none";
+    modalCongratulation.style.display = "none";
+    modalCongratulation.blur();
+  }
+};
+
+const createDoneTask = (i) => {
+  createTask(true, todoTasks[i].taskNameInput.value);
 };
 
 const createTask = (isDone, taskName) => {
@@ -224,10 +277,12 @@ const renderTask = (task) => {
   if (!task.isDone) todoTasks.push(elementsTask);
 };
 
-const removeFirstTodoTask = () => {
+const removeTodoTasks = () => {
   if (todoTasks.length > 0) {
-    todoTasks[0].li.remove();
-    todoTasks.shift();
+    todoTasks.forEach((todoTask) => {
+      todoTask.li.remove();
+    });
+    todoTasks.length = 0;
   }
 };
 
@@ -241,10 +296,11 @@ const setBreakUI = (typeBreak) => {
 
 const setWorkUI = () => {
   idleAudio.play();
+  cyclesLeftP.style.visibility = "visible";
   currentTodoNameH1.innerText =
     todoTasks.length > 0 ? todoTasks[0].taskNameInput.value : "";
   topBackground.style.background = "#863735";
-  startButton.style.visibility = "hidden";
+  if (todoTasks.length < 1) startButton.style.visibility = "hidden";
 };
 
 const resetTimers = () => {
@@ -261,8 +317,7 @@ const resetTimers = () => {
 // Stop pomodoro button
 stopButton.addEventListener("click", () => {
   handleState("done");
-  pomodoro.cycleState = "idle";
-  setButtonsText();
+  if (!pomodoro.timerId) handleState("inProgress");
 });
 
 // Task creation
@@ -297,6 +352,11 @@ const setElementsData = (elementsTask, task) => {
     "https://www.svgrepo.com/show/6440/delete-button.svg";
   elementsTask.deleteButton.addEventListener("click", () => {
     elementsTask.li.remove();
+    todoTasks.splice(task.id, 1);
+    if (todoTasks.length < 1) {
+      startButton.style.visibility = "hidden";
+      currentTodoNameH1.innerText = "Start by creating a new task 🍅";
+    }
   });
 
   elementsTask.taskNameInput.type = "text";
@@ -305,6 +365,7 @@ const setElementsData = (elementsTask, task) => {
   elementsTask.startTodoButton.src =
     "https://www.svgrepo.com/show/312860/play-button.svg";
   elementsTask.startTodoButton.addEventListener("click", () => {
+    clearInterval(pomodoro.timerId);
     handleState("inProgress");
     setTaskFirstPriority(todoTasks, task);
   });
@@ -354,23 +415,13 @@ const getPomodoro = (
     },
     longBreakDelay: longBreakDelay,
     longBreakDelayMax: longBreakDelay,
-    cycle: "idle",
+    cycleState: "idle",
     currentTimer: "work",
     timerId: null
   };
 };
 
-// Modal
-pomodoroSettingsButton.addEventListener("click", () => {
-  modal.style.display = "flex";
-  darkBg.style.display = "inline-block";
-});
-
-closeSettingsButton.addEventListener("click", () => {
-  modal.style.display = "none";
-  darkBg.style.display = "none";
-});
-
+// Modal Settings
 saveSettingsButton.addEventListener("click", () => {
   const inputsModal = [
     workInput,
@@ -388,32 +439,54 @@ saveSettingsButton.addEventListener("click", () => {
 
   if (isInvalid) return;
 
-  const savedPomodoro = getPomodoro(
+  const savedPomodoroSettings = getPomodoro(
     parseInt(workInput.value),
     parseInt(shortBreakInput.value),
     parseInt(longBreakInput.value),
     parseInt(longBreakDelayInput.value)
   );
 
-  setPomodoroModal(savedPomodoro);
-  pomodoroDefault = structuredClone(savedPomodoro);
-  pomodoro = structuredClone(savedPomodoro);
+  setPomodoroSettings(savedPomodoroSettings);
+  pomodoroDefault = structuredClone(savedPomodoroSettings);
+  pomodoro = structuredClone(savedPomodoroSettings);
   updateUI(getCurrentTimer());
+  toggleSettingsModal();
+  clearInterval(pomodoro.timerId);
 });
 
-const setPomodoroModal = (savedPomodoro) => {
+closeSettingsButton.addEventListener("click", () => {
+  toggleSettingsModal();
+});
+
+const setPomodoroSettings = (savedPomodoroSettings) => {
   workDurationModalP.innerText = Math.floor(
-    savedPomodoro.workTimer.secondsLeft / 60
+    savedPomodoroSettings.workTimer.secondsLeft / 60
   );
   shortBreakDurationModalP.innerText = Math.floor(
-    savedPomodoro.shortBreakTimer.secondsLeft / 60
+    savedPomodoroSettings.shortBreakTimer.secondsLeft / 60
   );
   longBreakDurationModalP.innerText = Math.floor(
-    savedPomodoro.longBreakTimer.secondsLeft / 60
+    savedPomodoroSettings.longBreakTimer.secondsLeft / 60
   );
-  longBreakDelayModalP.innerText = savedPomodoro.longBreakDelay;
-  cyclesLeftP.innerText = `${savedPomodoro.longBreakDelay} pomodoro before long break.`;
+  longBreakDelayModalP.innerText = savedPomodoroSettings.longBreakDelay;
+  cyclesLeftP.innerText = `${savedPomodoroSettings.longBreakDelay} pomodoro before long break.`;
 };
 
-setPomodoroModal(pomodoro);
+const toggleSettingsModal = () => {
+  if (modalSettings.style.display !== "flex") {
+    darkBg.style.display = "inline-block";
+    modalSettings.style.display = "flex";
+    modalSettings.focus();
+  } else {
+    darkBg.style.display = "none";
+    modalSettings.style.display = "none";
+    modalSettings.blur();
+  }
+};
+
+pomodoroSettingsButton.addEventListener("click", () => {
+  toggleSettingsModal();
+});
+
+setPomodoroSettings(pomodoro);
 updateUI(getCurrentTimer());

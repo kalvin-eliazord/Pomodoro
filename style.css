@@ -28,18 +28,18 @@ body {
   overflow-y: hidden;
 }
 
-.topHigh {
+.timerParent {
   display: flex;
   font-size: 56px;
   justify-content: center;
   position: relative;
-  bottom: 5px;
+  bottom: 30px;
 }
 
 .cyclesLeftP {
   font-size: 16px;
   position: relative;
-  bottom: 10px;
+  bottom: 40px;
   font-weight: 100;
 }
 
@@ -54,6 +54,8 @@ body {
   width: 200px;
   margin-bottom: 10px;
   border: 1px solid white;
+  position: relative;
+  bottom: 20px;
 }
 
 .progressBar {
@@ -69,6 +71,7 @@ body {
   font-weight: 100;
   position: relative;
   font-size: 18px;
+  bottom: 15px;
 }
 
 .topDown {
@@ -174,9 +177,22 @@ img:hover {
   bottom: 50px;
 }
 
+.pomodoroSettingsBtnParent {
+  width: 60px;
+  height: 60px;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+.pomodoroSettingsBtnParent:hover {
+  cursor: pointer;
+}
+
 .pomodoroSettingsButton {
-  right: 46%;
-  top: 5%;
+  pointer-events: none;
 }
 
 .darkBg {
@@ -189,7 +205,7 @@ img:hover {
   display: none;
 }
 
-.modal,
+.modalSettings,
 .modalCongratulation {
   color: white;
   position: fixed;
@@ -207,6 +223,17 @@ img:hover {
   max-width: 700px;
   box-shadow: 5px 30px 70px rgba(0, 0, 0, 0.5);
   display: none;
+}
+
+.modalCongratulation {
+  opacity: 0.9;
+  top: 25%;
+  width: 500px;
+}
+
+.questionCongratulationParent {
+  position: relative;
+  left: 28%;
 }
 
 .titleModal {
@@ -234,34 +261,43 @@ th {
 }
 
 .saveSettingsButton,
-.closeSettingsButton {
+.closeSettingsButton,
+.noButton,
+.yesButton {
   padding: 10px;
   margin: 20px;
   border-radius: 10px;
 }
 
-.closeSettingsButton {
+.closeSettingsButton,
+.noButton {
   border: 1px solid white;
 }
 
-.saveSettingsButton {
+.saveSettingsButton,
+.yesButton {
   background-color: #863735;
 }
 
 .saveSettingsButton:hover,
-.closeSettingsButton:hover {
+.closeSettingsButton:hover,
+.yesButton:hover,
+.noButton:hover {
   cursor: pointer;
 }
 
-.closeSettingsButton:hover {
+.closeSettingsButton:hover,
+.noButton:hover {
   background-color: grey;
 }
 
-.saveSettingsButton:hover {
+.saveSettingsButton:hover,
+.yesButton:hover {
   border: 1px solid white;
 }
 
-.buttonsParent {
+.btnsSettingsParent,
+.btnsCongratulationParent {
   display: flex;
   gap: 30px;
 }
@@ -273,4 +309,25 @@ th {
   font-weight: bold;
   position: relative;
   left: 20px;
+}
+
+.confetti {
+  position: fixed;
+  width: 10px;
+  height: 10px;
+  top: 0;
+  left: 42%;
+  opacity: 0.7;
+  background-color: red;
+  animation: fall linear infinite;
+}
+
+@keyframes fall {
+  0% {
+    transform: translateY(0) rotate(0) translateX(0);
+  }
+
+  100% {
+    transform: translateY(100vh) rotate(720deg);
+  }
 }

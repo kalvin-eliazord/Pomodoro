@@ -4,14 +4,19 @@
     <header>
         <link href="style.css" rel="stylesheet"></link>
     </header>
-    <audio class="shortBreakAudio" src="https://cdn.pixabay.com/audio/2022/07/15/audio_89f13f8631.mp3"> </audio>
-    <audio class="longBreakAudio" src="https://cdn.pixabay.com/audio/2024/07/22/audio_b7c82a50d6.mp3"> </audio>
-    <audio class="idleAudio" src="https://www.myinstants.com/media/sounds/aot-eyecatch-intermission-song-end.mp3"> </audio>
     <div class="modalCongratulation">
       <h1 class="titleModal"> Congratulation! 🍅</h1>
-      <p class="congratulationP"> </p>
+      <div class="questionCongratulationParent">
+        <p class="congratulationP"> Did you finish your tasks ?</p>
+        <div class="btnsCongratulationParent">
+          <div class="noButton"> N O </div>
+          <div class="yesButton"> Y E S </div>
+        </div>
+      </div>
+    
     </div>
-    <div class="modal">
+    
+    <div class="modalSettings">
       <h1 class="titleModal"> Pomodoro settings 🍅</h1>
       <table>
         <tr>
@@ -51,7 +56,7 @@
           </th>
         </tr>
       </table>
-      <div class="buttonsParent">
+      <div class="btnsSettingsParent">
         <div class="closeSettingsButton"> C L O S E</div>
         <div class="saveSettingsButton"> S A V E</div>
       </div>
@@ -62,10 +67,12 @@
     <div class="main">
     
       <div class="top">
-        <img class="pomodoroSettingsButton" src="https://www.svgrepo.com/show/498931/settings2.svg">
+        <div class="pomodoroSettingsBtnParent">
+          <img class="pomodoroSettingsButton" src="https://www.svgrepo.com/show/498931/settings2.svg">
+        </div>
         <p class="cyclesLeftP">
         </p>
-        <div class="topHigh">
+        <div class="timerParent">
           <h3 class="minutesH3">
           </h3>
           <h3 class="timerSeparator"> : </h3>
@@ -105,6 +112,10 @@
         </div>
       </div>
     </div>
+    
+    <audio class="shortBreakAudio" src="https://cdn.pixabay.com/audio/2022/07/15/audio_89f13f8631.mp3"> </audio>
+    <audio class="longBreakAudio" src="https://cdn.pixabay.com/audio/2024/07/22/audio_b7c82a50d6.mp3"> </audio>
+    <audio class="idleAudio" src="https://www.myinstants.com/media/sounds/aot-eyecatch-intermission-song-end.mp3"> </audio>
 </body>
 
 <script src="script.js"></script>
