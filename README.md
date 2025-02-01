@@ -1,4 +1,4 @@
-# Pomodoro Timer Documentation
+# Pomodoro Timer 🍅
 
 ## Preview
 
